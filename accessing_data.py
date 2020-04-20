@@ -1,4 +1,4 @@
-from irmacache import Cache
+from irmacache import Cache, Embed_Cache
 import json
 import requests
 import secrets
@@ -182,13 +182,15 @@ if __name__ == "__main__":
     print(f"Total kept: {count_kept}\nTotal discard: {count_discard}")
     with open('kept_tweets.json', 'w') as out_file:
         json.dump(kept_tweets, out_file)
-    cache = Cache("irma_cache.json")
-
-    for idx in range(100-150):
+    cache = Embed_Cache("embed_cache.json")
+    print("cache made")
+    for idx in range(69, len(kept_tweets)):
         params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
         response = cache.get(EMBED_URL,params)
         print(response)
-        html=json.loads(response)['html']
-        print(html)
-
+        try:
+            html=json.loads(response)['html']
+            print(html)
+        except:
+            continue
 

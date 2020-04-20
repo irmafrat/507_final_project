@@ -32,3 +32,20 @@ class Cache:
         with open(self.filename,"w") as cache_file:
             json.dump(self.cache, cache_file)
         return get_response
+
+class Embed_Cache(Cache):
+    def __init__(self, filename="irma_cache.json"):
+        self.filename= filename
+        self.cache = self.load_cache()
+
+    def update(self, url:str, params:dict):
+        get_response = requests.get(url,params).text
+        self.cache.update({url + "?" + str(params):get_response})
+        try:
+            resp_dict = json.loads(get_response)
+            with open(self.filename,"w") as cache_file:
+                json.dump(self.cache, cache_file)
+        except:
+            get_response = f'Embed not available. Tweet ({params["url"].split("/")[-1]}) may have been deleted.'
+
+        return get_response
