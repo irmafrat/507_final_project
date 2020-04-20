@@ -85,11 +85,13 @@ The tables are the following with their SQL code:
 
  ### Interaction and Presentation Plans
 
- With this program the user will be able to search a database of tweets related to historical events in Puerto Rico. The user will be able to fill a form setting up the dates,
- keywords, hashtags, and locations. With this metadata, the user will see a table displaying the data requested, a link of the location that the tweet is related and a embeding of the tweet;
- if the tweet has beed deleted the user will see a link or a warning message.
+With this program the user will be able to search a database of tweets related to historical events in Puerto Rico.
+The user will be able to fill a form setting up the dates, keywords, hashtags, and locations.
+With this metadata, the user will see a table displaying the data requested,
+a link of the location that the tweet is related and an embedding of the tweet;
+if the tweet has been deleted the user will see a link or a warning message.
 
- I am planing to use Flask to display the form and table.
+I am planning to use Flask to display the form and table.
 
 
 
