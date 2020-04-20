@@ -7,11 +7,11 @@
 
 ###Data Provenance
 
-    DATA     |    FORMAT     |     URL
+|    DATA     |    FORMAT     |     URL     |
 ------------ | ------------- | -------------
-Ricky Renuncia Protest | JSONL | https://archive.org/details/tweetsRickyRenuncia-final
-HuelgaUPRTweets | JSONL | https://archive.org/details/tweet-ids_HuelgaUPR20170420-0518
-Embeded Tweets  | JSON  | API response
+|Ricky Renuncia Protest | JSONL | https://archive.org/details/tweetsRickyRenuncia-final|
+|HuelgaUPRTweets | JSONL | https://archive.org/details/tweet-ids_HuelgaUPR20170420-0518|
+|Embeded Tweets  | JSON  | API response|
 
 ### Data Access: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest(2017))
 ####The datasets were available thorough the Internet Archive and the Documenting the Now tweet catalog.
@@ -20,10 +20,10 @@ Embeded Tweets  | JSON  | API response
 ####The project is using cache to store the embedded tweets with an id of the user in order to provide a display or a link to the tweet
 
 
-    DATA     |    QUANTITY   |  RECORDS RETRIEVED |     FORMAT   | MODIFICATION
+|    DATA     |    QUANTITY   |  RECORDS RETRIEVED |     FORMAT   | MODIFICATION|
 ------------ | ------------- | -------------      | -------------| -------------
-Ricky Renuncia Protest | 977,207 | Example files of 200 for testing | JSONl | Using the command "split -l $SPLIT_SIZE $FILE $PREFIX", the 6GB was splitted into 20 files of 50,000 JSONL
-HuelgaUPRTweets | 19,914 | Example files of 200 for testing | JSONL | No modification, file to small.
+|Ricky Renuncia Protest | 977,207 | Example files of 200 for testing | JSONl | Using the command "split -l $SPLIT_SIZE $FILE $PREFIX", the 6GB was splitted into 20 files of 50,000 JSONL |
+|HuelgaUPRTweets | 19,914 | Example files of 200 for testing | JSONL | No modification, file to small. |
 
 ### Description of records
 
