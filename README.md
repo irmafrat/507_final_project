@@ -47,23 +47,43 @@ This information will be transformed into a dictionary in order to facilitate th
 #### Program running with and without cache
 
 Currently, if the program runs without cache, it will display only the information selected.
-        [Program running without the cache commands](https://drive.google.com/uc?export=view&id=1irtGTyhjnMa7j5Lh31j8mK_t3kkqB2zu)
+        ![Photo of the program running without the cache commands]
+        (https://drive.google.com/uc?export=view&id=1irtGTyhjnMa7j5Lh31j8mK_t3kkqB2zu)
 
 
 While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
 If the tweet has not been deleted, it will display a string of the tweet.
-        [Program running with cache](https://drive.google.com/uc?export=view&id=1rCmSYWNBSm_4kYVIjnFVFxG2dmcVhY4X)
+        ![Photo of the program running with cache]
+        (https://drive.google.com/uc?export=view&id=1rCmSYWNBSm_4kYVIjnFVFxG2dmcVhY4X)
 
 #### Cache code  and called used in the program
 I created a class called Cache and use it on the program
-        [Cache Code](https://drive.google.com/uc?export=view&id=1jnkWzzjC2OZwmY6VMXI-7rniqiPpGI2L)
+        ![Photo of the cache Code]
+        (https://drive.google.com/uc?export=view&id=1jnkWzzjC2OZwmY6VMXI-7rniqiPpGI2L)
 
 
-Cache class code
-        [Program Code](https://drive.google.com/uc?export=view&id=1E6SH0FOdQWmRTXUL3zkB_QnQ3gtOMZ8b)
+Cache class code implemented in the program
+        ![Photo of the program code]
+        (https://drive.google.com/uc?export=view&id=1E6SH0FOdQWmRTXUL3zkB_QnQ3gtOMZ8b)
 
 
 ### Database (Working)
+This project will create one database with five tables.
+The tables are the following with their SQL code:
+
+*tweet_txt = contains the full text of the tweet
+        CREATE TABLE tweet_txt(tweet_id int PRIMARY KEY, full_text char(200), user_id int, hashtag varchar(30),place varchar(30))
+
+*tweet_loc = contains information about the location of the user at the moment to publish the tweet
+        CREATE TABLE tweet_loc(tweet_id int PRIMARY KEY, place varchar(30), geo varchar(30), coordinates varchar(30),user_loc varchar(30))
+*embed_tweet= contains information about the tweets and their Twiter link
+        CREATE TABLE embed_tweet(tweet_id int PRIMARY KEY , validation int, link char (200))
+*twit_info = contains users_id, tweets_id and if the tweet has been deleted or not
+        CREATE TABLE tweet_info (tweet_id int PRIMARY KEY, user_id int,valid_tweet_id int, valid_user_id int)
+*geo_mapping = the table pairs the place string with the Google MAPS API data of the place location
+CREATE TABLE geo_mapping(tweet_id int PRIMARY KEY, place varchar(30),converted_place char(30),google_api_loc varchar(30))
+
+
 
 
 
