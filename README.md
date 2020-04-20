@@ -14,7 +14,7 @@
 |Embeded Tweets  | JSON  | Twitter API Response |
 
 ### Data Access: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest)
-The datasets were available thorough the Internet Archive and the Documenting the Now tweet catalog.
+The datasets were available through the Internet Archive and the Documenting the Now tweet catalog.
 Both datasets were txt files that contained tweets ids.
 Using the TWARC package and the Hydrator, both created by Documenting the Now, the program is able to retrieve the full record of the tweets.
 The project is using cache to store the embedded tweets with an id of the user in order to provide a display or a link to the tweet
@@ -83,7 +83,7 @@ The tables are the following with their SQL code:
         **CODE** CREATE TABLE geo_mapping(tweet_id int PRIMARY KEY, place varchar(30),converted_place char(30),google_api_loc varchar(30))
 
 
- ### Interaction and Presentation Plans
+ ### Interaction and Presentation Plans (Working)
 
 With this program the user will be able to search a database of tweets related to historical events in Puerto Rico.
 The user will be able to fill a form setting up the dates, keywords, hashtags, and locations.
