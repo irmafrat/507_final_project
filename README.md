@@ -27,6 +27,21 @@ The project is using cache to store the embedded tweets with an id of the user i
 
 ### Description of records
 
+For the tweets that contains geographical data it will be extracted the following tags:
+
+*["full_text"]= Text that contains the tweet
+*["created_at"] =  Date and time
+*["source"] = Device used to publish the tweet
+*["id"] = Tweet identifier
+*["geo"] = Geographical metadata
+*["place"]= Geographical metadata
+*["coordinates"] = Geographical metadata
+*["user"]["location"] = User entry about geographical metadata
+*["user"]["id_str"] = User identifier
+*["entities"]["hashtags"] = Hashtags used in the tweet
+
+This information will be transformed into a dictionary in order to facilitate the retrieval of the tweets on the SQL database.
+
+### Cache Implementation
 
 
-### H3

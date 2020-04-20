@@ -115,27 +115,6 @@ def display_tweets_geo(tweet_str):
             return f"ESTA CACA!"
 
 
-# #Extracting text from the tweet
-# def extract_tweet_data(tweet_str):
-#     #Obtains the data of interest from the tweet.
-#     converted_tweet = convert_json(tweet_str)
-#     text= converted_tweet["full_text"]
-#     date= converted_tweet["created_at"]
-#     # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
-#     source= converted_tweet["source"]
-#     tweet_id= converted_tweet["id"]
-#     user_id= converted_tweet["user"]['id_str']
-#     tweet = Tweet(text, date, None, source, tweet_id,user_id)
-#     return tweet
-
-# def cache_geo_tweet(tweet_str):
-#     #Receives a tweet strings, confirms that contains geolocation using the funcion keep_tweet,
-#     # extract the interested data using the function extract tweet data and send it to the cache file.
-#     if keep_tweet(tweet_str)==True:
-#        CACHE_FUNCTION(extract_tweet_data(tweet_str)
-#         return f"Tweet is being saved in the cache file"
-
-
 #Filter tweet id in the tweet str
 def tweet_id(tweet_str):
     #Select the tweet id in the tweet_str and returns an integer(id).
@@ -203,10 +182,11 @@ if __name__ == "__main__":
     print(f"Total kept: {count_kept}\nTotal discard: {count_discard}")
     with open('kept_tweets.json', 'w') as out_file:
         json.dump(kept_tweets, out_file)
-    cache = Cache("irmacache.json")
+    cache = Cache("irma_cache.json")
+
     for idx in range(100-150):
         params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
-        response = Cache.get(EMBED_URL,params)
+        response = cache.get(EMBED_URL,params)
         print(response)
         html=json.loads(response)['html']
         print(html)

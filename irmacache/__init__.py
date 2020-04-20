@@ -2,7 +2,7 @@ import requests
 import json
 
 class Cache:
-    def __init__(self, filename="irmacache.json"):
+    def __init__(self, filename="irma_cache.json"):
         self.filename= filename
         self.cache = self.load_cache()
 
