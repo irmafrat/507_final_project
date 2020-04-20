@@ -44,31 +44,23 @@ This information will be transformed into a dictionary in order to facilitate th
 
 ### Cache Implementation (Working)
 
-##Program running with and without cache
+## Program running with and without cache
 
 Currently, if the program runs without cache, it will display only the information selected.
-![Program running without the cache commands](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-16-37.png
+![Program running without the cache commands](https://photos.google.com/share/AF1QipOjHrvAbeLekyiyFpRNPrK5Qmag02CF93UIH8l1Q6A60p8s8iw0Wm29bT28ZJyefg?key=Y0FiQ0lKZlU3bmRwblhSSDJQZnExSjR3SXh6c2V3)
 
 
 While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
 If the tweet has not been deleted, it will display a string of the tweet.
-![Program running with cache](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-27-31.png)
+![Program running with cache](https://photos.app.goo.gl/CrDrprGnXtfJbw8s7)
 
-##Cache code used in the program
+## Cache code used in the program
 I created a class called Cache and use it on the program
 
-![Cache Code](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-27-00.png
+![Cache Code](https://photos.app.goo.gl/8ZhmaiXXrkAwGCq46)
 
 
 ##Cache class called in the program
-![Program Code](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-14-06.png)
+![Program Code](https://photos.app.goo.gl/imFtLCcgDoVEjqbd9)
 
 ### Database (Working)
-
-
-
-
-
-
-
-
