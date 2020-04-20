@@ -11,13 +11,13 @@
 ------------ | ------------- | -------------
 |Ricky Renuncia Protest | JSONL | https://archive.org/details/tweetsRickyRenuncia-final|
 |HuelgaUPRTweets | JSONL | https://archive.org/details/tweet-ids_HuelgaUPR20170420-0518|
-|Embeded Tweets  | JSON  | API response|
+|Embeded Tweets  | JSON  | Twitter API Response |
 
 ### Data Access: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest(2017))
-#### The datasets were available thorough the Internet Archive and the Documenting the Now tweet catalog.
-#### Both datasets were txt files that contained tweets ids.
-#### Using the TWARC package and the Hydrator, both created by Documenting the Now, the program is able to retrieve the full record of the tweets.
-#### The project is using cache to store the embedded tweets with an id of the user in order to provide a display or a link to the tweet
+The datasets were available thorough the Internet Archive and the Documenting the Now tweet catalog.
+Both datasets were txt files that contained tweets ids.
+Using the TWARC package and the Hydrator, both created by Documenting the Now, the program is able to retrieve the full record of the tweets.
+The project is using cache to store the embedded tweets with an id of the user in order to provide a display or a link to the tweet
 
 
 |    DATA     |    QUANTITY   |  RECORDS RETRIEVED |     FORMAT   | MODIFICATION|
