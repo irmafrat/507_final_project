@@ -52,16 +52,18 @@ Currently, if the program runs without cache, it will display only the informati
 
 While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
 If the tweet has not been deleted, it will display a string of the tweet.
-![Program running with cache](https://drive.google.com/file/d/1rCmSYWNBSm_4kYVIjnFVFxG2dmcVhY4X/view?usp=sharing
+![Program running with cache](https://drive.google.com/file/d/1rCmSYWNBSm_4kYVIjnFVFxG2dmcVhY4X/view?usp=sharing)
 
-#### Cache code used in the program
+
+#### Cache code  and called used in the program
 I created a class called Cache and use it on the program
 
 ![Cache Code](https://drive.google.com/file/d/1jnkWzzjC2OZwmY6VMXI-7rniqiPpGI2L/view?usp=sharing)
 
 
-##Cache class called in the program
-![Program Code](https://drive.google.com/file/d/1E6SH0FOdQWmRTXUL3zkB_QnQ3gtOMZ8b/view?usp=sharing
+Cache class code
+![Program Code](https://drive.google.com/file/d/1E6SH0FOdQWmRTXUL3zkB_QnQ3gtOMZ8b/view?usp=sharing)
+
 
 ### Database (Working)
 
