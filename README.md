@@ -13,7 +13,7 @@
 |HuelgaUPRTweets | JSONL | https://archive.org/details/tweet-ids_HuelgaUPR20170420-0518|
 |Embeded Tweets  | JSON  | Twitter API Response |
 
-### Data Access: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest(2017))
+### Data Access: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest)
 The datasets were available thorough the Internet Archive and the Documenting the Now tweet catalog.
 Both datasets were txt files that contained tweets ids.
 Using the TWARC package and the Hydrator, both created by Documenting the Now, the program is able to retrieve the full record of the tweets.
@@ -84,6 +84,14 @@ The tables are the following with their SQL code:
 
 
  ### Interaction and Presentation Plans
+
+ With this program the user will be able to search a database of tweets related to historical events in Puerto Rico. The user will be able to fill a form setting up the dates,
+ keywords, hashtags, and locations. With this metadata, the user will see a table displaying the data requested, a link of the location that the tweet is related and a embeding of the tweet;
+ if the tweet has beed deleted the user will see a link or a warning message.
+
+ I am planing to use Flask to display the form and table.
+
+
 
 
 
