@@ -1,3 +1,4 @@
+from irmacache import Cache
 import json
 import requests
 import secrets
@@ -5,8 +6,12 @@ from requests_oauthlib import OAuth1
 from bs4 import BeautifulSoup
 
 
+BASE_URL= "https://twitter.com/anyuser/status/"
+EMBED_URL = "https://publish.twitter.com/oembed"
+
+
 class Tweet:
-    def __init__(self:object, text: str, date: str, hashtags:str, source: str, id: int, geo=None, coordinates= None, place = None, user_location= None):
+    def __init__(self:object, text: str, date: str, hashtags:str, source: str, id: int, user_id: str, geo=None, coordinates= None, place = None, user_location= None):
         """
 
         :type self: object
@@ -20,6 +25,8 @@ class Tweet:
         self.coordinates= coordinates
         self.place= place
         self.user_location = user_location
+        self.user_id = user_id
+
 
     def __str__(self):
         return (
@@ -31,7 +38,7 @@ class Tweet:
                 f"\tGeo: {self.geo}\n" +
                 f"\tCoordinates: {self.coordinates}\n" +
                 f"\tPlace: {self.place}\n" +
-                "\n"
+                f"\tUserID: {self.user_id}\n"
         )
 
     def extract_tweet_data(tweet_str):
@@ -45,7 +52,8 @@ class Tweet:
                      'geo': converted_tweet["geo"],
                      'place': converted_tweet["place"],
                      'coordinates': converted_tweet["coordinates"],
-                     'user_location':converted_tweet["user"]["location"]})
+                     'user_location': converted_tweet["user"]["location"],
+                     'user_id': converted_tweet["user"]["id_str"]})
         if len(converted_tweet["entities"]["hashtags"]) > 0:
             data.update({'hashtags' : converted_tweet["entities"]["hashtags"][0]["text"]})
         else:
@@ -55,8 +63,26 @@ class Tweet:
     def tweet_from_str(api_json_str):
         # print(api_json_str)
         data = Tweet.extract_tweet_data(api_json_str)
-        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['geo'],data['coordinates'], data['place'], data['user_location'])
+        tweet = Tweet.tweet_from_dict(data)
         return tweet
+
+    def tweet_from_dict(data: dict):
+        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['geo'],data['coordinates'], data['place'], data['user_location'], data['user_id'])
+        return tweet
+
+
+#Extracting text from the tweet
+def extract_tweet_data(tweet_str):
+    #Obtains the data of interest from the tweet.
+    converted_tweet = convert_json(tweet_str)
+    text= converted_tweet["full_text"]
+    date= converted_tweet["created_at"]
+    # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
+    source= converted_tweet["source"]
+    tweet_id= converted_tweet["id"]
+    user_id= converted_tweet["user"]["id_str"]
+    tweet = Tweet(text, date, None, source, tweet_id, user_id)
+    return tweet
 
 
 #Converting strings to Dictionaru
@@ -89,17 +115,18 @@ def display_tweets_geo(tweet_str):
             return f"ESTA CACA!"
 
 
-#Extracting text from the tweet
-def extract_tweet_data(tweet_str):
-    #Obtains the data of interest from the tweet.
-    converted_tweet = convert_json(tweet_str)
-    text= converted_tweet["full_text"]
-    date= converted_tweet["created_at"]
-    # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
-    source= converted_tweet["source"]
-    tweet_id= converted_tweet["id"]
-    tweet = Tweet(text, date, None, source, tweet_id)
-    return tweet
+# #Extracting text from the tweet
+# def extract_tweet_data(tweet_str):
+#     #Obtains the data of interest from the tweet.
+#     converted_tweet = convert_json(tweet_str)
+#     text= converted_tweet["full_text"]
+#     date= converted_tweet["created_at"]
+#     # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
+#     source= converted_tweet["source"]
+#     tweet_id= converted_tweet["id"]
+#     user_id= converted_tweet["user"]['id_str']
+#     tweet = Tweet(text, date, None, source, tweet_id,user_id)
+#     return tweet
 
 # def cache_geo_tweet(tweet_str):
 #     #Receives a tweet strings, confirms that contains geolocation using the funcion keep_tweet,
@@ -141,9 +168,9 @@ if __name__ == "__main__":
             resource_owner_key=access_token,
             resource_owner_secret=access_token_secret)
 
-    # file = open("/home/irma/PycharmProjects/RickyUPRFinalProject/RickyRenunciaLlevateJunta.csv", "r")
-    file= open("/home/irma/PycharmProjects/RickyUPRFinalProject/example.jsonl")
-    # file= open("/home/irma/PycharmProjects/RickyUPRFinalProject/luchaSiEntregano.csv","r")
+    # file = open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.csv", "r")
+    file= open("/home/irma/PycharmProjects/RickyFinalProject/example.jsonl")
+    # file= open("/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano.csv","r")
     # reader =file.readline()
     running_idx = 0
     kept_tweets = []
@@ -161,17 +188,11 @@ if __name__ == "__main__":
                 # print(line)
                 tweet = Tweet.tweet_from_str(line)
                 print(tweet)
-                kept_tweets.append(tweet)
+                kept_tweets.append(tweet.__dict__)
                 count_kept += 1
             else:
                 count_discard += 1
-            #     print("Tweet not kept")
-            #     print(extract_tweet_data(line))
-            #     print(display_tweets_geo(line))
-            #     print(tweet_id(line))
-            #     print(retrive_tweet(line))
-            # print(convert_json(line))
-            # print(keep_tweet(line))
+
         except:
             break
         running_idx +=1
@@ -180,10 +201,14 @@ if __name__ == "__main__":
 
     file.close()
     print(f"Total kept: {count_kept}\nTotal discard: {count_discard}")
-    # line= reader
-    # print(convert_json(line))
-    # print(keep_tweet(line))
-    # print(extract_tweet_data(line))
-    # print(display_tweets_geo(line))
-    # print(tweet_id(line))
-    # print(retrive_tweet(line))
+    with open('kept_tweets.json', 'w') as out_file:
+        json.dump(kept_tweets, out_file)
+    cache = Cache("irmacache.json")
+    for idx in range(100-150):
+        params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
+        response = Cache.get(EMBED_URL,params)
+        print(response)
+        html=json.loads(response)['html']
+        print(html)
+
+
