@@ -29,41 +29,41 @@ The project is using cache to store the embedded tweets with an id of the user i
 
 For the tweets that contains geographical data it will be extracted the following tags:
 
-*["full_text"]= Text that contains the tweet
-*["created_at"] =  Date and time
-*["source"] = Device used to publish the tweet
-*["id"] = Tweet identifier
-*["geo"] = Geographical metadata
-*["place"]= Geographical metadata
-*["coordinates"] = Geographical metadata
-*["user"]["location"] = User entry about geographical metadata
-*["user"]["id_str"] = User identifier
-*["entities"]["hashtags"] = Hashtags used in the tweet
+    *["full_text"]= Text that contains the tweet
+    *["created_at"] =  Date and time
+    *["source"] = Device used to publish the tweet
+    *["id"] = Tweet identifier
+    *["geo"] = Geographical metadata
+    *["place"]= Geographical metadata
+    *["coordinates"] = Geographical metadata
+    *["user"]["location"] = User entry about geographical metadata
+    *["user"]["id_str"] = User identifier
+    *["entities"]["hashtags"] = Hashtags used in the tweet
 
 This information will be transformed into a dictionary in order to facilitate the retrieval of the tweets on the SQL database.
 
 ### Cache Implementation (Working)
 
-# Program running with and without cache #
+##Program running with and without cache
 
 Currently, if the program runs without cache, it will display only the information selected.
-![Program running without the cache commands](https://photos.app.goo.gl/qjbUyBdqz94FNeFi7)
+![Program running without the cache commands](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-16-37.png
 
 
 While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
 If the tweet has not been deleted, it will display a string of the tweet.
-![Program running with cache](https://photos.app.goo.gl/o9Na5ra64W9L9Jam8)
+![Program running with cache](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-27-31.png)
 
-# Cache code used in the program
+##Cache code used in the program
 I created a class called Cache and use it on the program
 
-![Cache Code] (https://photos.app.goo.gl/Jyi6pvnyWGahjCxt6)
+![Cache Code](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-27-00.png
 
-#Cache class called in the program
-![Program Code](https://photos.app.goo.gl/6Zp9dwpkUn69sKSN6)
+
+##Cache class called in the program
+![Program Code](/home/irma/PycharmProjects/RickyFinalProject/photos/Screenshot from 2020-04-20 00-14-06.png)
 
 ### Database (Working)
-
 
 
 
