@@ -67,15 +67,23 @@ Cache class code implemented in the program
 This project will create one database with five tables.
 The tables are the following with their SQL code:
 
-*tweet_txt = contains the full text of the tweet. *CODE* CREATE TABLE tweet_txt(tweet_id int PRIMARY KEY, full_text char(200), user_id int, hashtag varchar(30),place varchar(30))
+    *tweet_txt = contains the full text of the tweet.
+        **CODE** CREATE TABLE tweet_txt(tweet_id int PRIMARY KEY, full_text char(200), user_id int, hashtag varchar(30),place varchar(30))
 
-*tweet_loc = contains information about the location of the user at the moment to publish the tweet. *CODE* CREATE TABLE tweet_loc(tweet_id int PRIMARY KEY, place varchar(30), geo varchar(30), coordinates varchar(30),user_loc varchar(30))
+    *tweet_loc = contains information about the location of the user at the moment to publish the tweet.
+        **CODE** CREATE TABLE tweet_loc(tweet_id int PRIMARY KEY, place varchar(30), geo varchar(30), coordinates varchar(30),user_loc varchar(30))
 
-*embed_tweet= contains information about the tweets and their Twiter link. *CODE* CREATE TABLE embed_tweet(tweet_id int PRIMARY KEY , validation int, link char (200))
+    *embed_tweet= contains information about the tweets and their Twiter link.
+        **CODE** CREATE TABLE embed_tweet(tweet_id int PRIMARY KEY , validation int, link char (200))
 
-*twit_info = contains users_id, tweets_id and if the tweet has been deleted or not. *CODE* CREATE TABLE tweet_info (tweet_id int PRIMARY KEY, user_id int,valid_tweet_id int, valid_user_id int)
+    *twit_info = contains users_id, tweets_id and if the tweet has been deleted or not.
+        **CODE** CREATE TABLE tweet_info (tweet_id int PRIMARY KEY, user_id int,valid_tweet_id int, valid_user_id int)
 
-*geo_mapping = the table pairs the place string with the Google MAPS API data of the place location. *CODE* CREATE TABLE geo_mapping(tweet_id int PRIMARY KEY, place varchar(30),converted_place char(30),google_api_loc varchar(30))
+    *geo_mapping = the table pairs the place string with the Google MAPS API data of the place location.
+        **CODE** CREATE TABLE geo_mapping(tweet_id int PRIMARY KEY, place varchar(30),converted_place char(30),google_api_loc varchar(30))
+
+
+ ### Interaction and Presentation Plans
 
 
 
