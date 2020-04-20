@@ -1,8 +1,7 @@
 secrets.py
-luchaSiEntregano.csv
-RickyRenunciaLlevateJunta.csv
+luchaSiEntregano.jsonl
+RickyRenunciaLlevateJunta.jsonl
 .idea
 *.csv
-.jsonl
 *.txt
 rickyrenunciaparts

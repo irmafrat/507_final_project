@@ -168,9 +168,9 @@ if __name__ == "__main__":
             resource_owner_key=access_token,
             resource_owner_secret=access_token_secret)
 
-    # file = open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.csv", "r")
+    # file = open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.jsonl", "r")
     file= open("/home/irma/PycharmProjects/RickyFinalProject/example.jsonl")
-    # file= open("/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano.csv","r")
+    # file= open("/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano.jsonl","r")
     # reader =file.readline()
     running_idx = 0
     kept_tweets = []
