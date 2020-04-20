@@ -184,7 +184,7 @@ if __name__ == "__main__":
         json.dump(kept_tweets, out_file)
     cache = Embed_Cache("embed_cache.json")
     print("cache made")
-    for idx in range(69, len(kept_tweets)):
+    for idx in range(10, len(kept_tweets)):
         params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
         response = cache.get(EMBED_URL,params)
         print(response)
@@ -193,4 +193,3 @@ if __name__ == "__main__":
             print(html)
         except:
             continue
-

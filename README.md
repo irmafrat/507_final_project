@@ -42,6 +42,33 @@ For the tweets that contains geographical data it will be extracted the followin
 
 This information will be transformed into a dictionary in order to facilitate the retrieval of the tweets on the SQL database.
 
-### Cache Implementation
+### Cache Implementation (Working)
+
+# Program running with and without cache #
+
+Currently, if the program runs without cache, it will display only the information selected.
+![Program running without the cache commands](https://photos.app.goo.gl/qjbUyBdqz94FNeFi7)
+
+
+While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
+If the tweet has not been deleted, it will display a string of the tweet.
+![Program running with cache](https://photos.app.goo.gl/o9Na5ra64W9L9Jam8)
+
+# Cache code used in the program
+I created a class called Cache and use it on the program
+
+![Cache Code] (https://photos.app.goo.gl/Jyi6pvnyWGahjCxt6)
+
+#Cache class called in the program
+![Program Code](https://photos.app.goo.gl/6Zp9dwpkUn69sKSN6)
+
+### Database (Working)
+
+
+
+
+
+
+
 
 
