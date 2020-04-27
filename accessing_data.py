@@ -3,6 +3,7 @@ import json
 import requests
 import secrets
 from requests_oauthlib import OAuth1
+import sqlite3
 from bs4 import BeautifulSoup
 
 
@@ -11,7 +12,7 @@ EMBED_URL = "https://publish.twitter.com/oembed"
 
 
 class Tweet:
-    def __init__(self:object, text: str, date: str, hashtags:str, source: str, id: int, user_id: str, geo=None, coordinates= None, place = None, user_location= None):
+    def __init__(self:object, text: str, date: str, hashtags:str, source: str, id: int, user_id: str, language: str, geo=None, coordinates= None, place = None, user_location= None):
         """
 
         :type self: object
@@ -21,12 +22,53 @@ class Tweet:
         self.hashtags = hashtags
         self.source = source
         self.id = id
+        self.language = language
         self.geo= geo
         self.coordinates= coordinates
         self.place= place
         self.user_location = user_location
         self.user_id = user_id
 
+    def sql_insert(self, table_name):
+        return f"INSERT INTO {table_name}" \
+               f"(tweet_id, full_text, user_id, geo, coordinates, place, user_loc, valid_tweet_id, valid_embed, language) " \
+               f"VALUES {tweet.sql_values()}"
+# #Extracting text from the tweet
+# def extract_tweet_data(tweet_str):
+#     #Obtains the data of interest from the tweet.
+#     converted_tweet = convert_json(tweet_str)
+#     text= converted_tweet["full_text"]
+#     date= converted_tweet["created_at"]
+#     # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
+#     source= converted_tweet["source"]
+#     tweet_id= converted_tweet["id"]
+#     user_id= converted_tweet["user"]["id_str"]
+#     tweet = Tweet(text, date, None, source, tweet_id, user_id)
+#     return tweet
+
+    def sql_values(self):
+        uid = self.user_id
+        if uid is None:
+            uid = "Null"
+        text = self.text
+        if '"' in text:
+            text = "'" + text + "'"
+        else:
+            text = '"' + text + '"'
+        # if '"' not in self.language:
+        #     self.language = "'" + self.language + "'"
+        # else:
+        #     self.language = '"' + self.language + '"'
+        return f"({self.id}, {text}, {uid}, \"{self.place}\" ," \
+               f"\"{self.geo}\", \"{self.coordinates}\",\"{self.user_location}\", " \
+               f"{self.valid_id()}, {self.valid_embed()}, \"{self.language}\")"
+
+
+    def  valid_id(self):
+        return 0
+
+    def valid_embed(self):
+        return 0
 
     def __str__(self):
         return (
@@ -38,7 +80,8 @@ class Tweet:
                 f"\tGeo: {self.geo}\n" +
                 f"\tCoordinates: {self.coordinates}\n" +
                 f"\tPlace: {self.place}\n" +
-                f"\tUserID: {self.user_id}\n"
+                f"\tUserID: {self.user_id}\n" +
+                f"\tLanguage: {self.language}\n"
         )
 
     def extract_tweet_data(tweet_str):
@@ -49,6 +92,7 @@ class Tweet:
                      'date' : converted_tweet["created_at"],
                      'source' : converted_tweet["source"],
                      'id' : converted_tweet["id"],
+                     'language': converted_tweet["lang"],
                      'geo': converted_tweet["geo"],
                      'place': converted_tweet["place"],
                      'coordinates': converted_tweet["coordinates"],
@@ -67,22 +111,23 @@ class Tweet:
         return tweet
 
     def tweet_from_dict(data: dict):
-        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['geo'],data['coordinates'], data['place'], data['user_location'], data['user_id'])
+        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['geo'],data['coordinates'], data['place'], data['user_location'], data['user_id'], data['language'])
         return tweet
 
 
-#Extracting text from the tweet
-def extract_tweet_data(tweet_str):
-    #Obtains the data of interest from the tweet.
-    converted_tweet = convert_json(tweet_str)
-    text= converted_tweet["full_text"]
-    date= converted_tweet["created_at"]
-    # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
-    source= converted_tweet["source"]
-    tweet_id= converted_tweet["id"]
-    user_id= converted_tweet["user"]["id_str"]
-    tweet = Tweet(text, date, None, source, tweet_id, user_id)
-    return tweet
+
+# #Extracting text from the tweet
+# def extract_tweet_data(tweet_str):
+#     #Obtains the data of interest from the tweet.
+#     converted_tweet = convert_json(tweet_str)
+#     text= converted_tweet["full_text"]
+#     date= converted_tweet["created_at"]
+#     # hashtags= converted_tweet["entities"]["hashtags"][0]["text"]
+#     source= converted_tweet["source"]
+#     tweet_id= converted_tweet["id"]
+#     user_id= converted_tweet["user"]["id_str"]
+#     tweet = Tweet(text, date, None, source, tweet_id, user_id)
+#     return tweet
 
 
 #Converting strings to Dictionaru
@@ -132,11 +177,80 @@ def retrive_tweet(tweet_id):
     return result
 
 
+# CONECTION AND CURSOR
+DB_NAME = "protest_database.sql"
+def create_db(db_name=DB_NAME):
+    conn = sqlite3.connect(db_name)
+    cur = conn.cursor()
 
+
+    #SQL TABLES
+    create_tweet_txt= "CREATE TABLE tweet_txt(tweet_id UNSIGNED BIG INT PRIMARY KEY, " \
+                      "full_text char(200), " \
+                      "user_id int, " \
+                      "place varchar(30), " \
+                      "geo varchar(30), " \
+                      "coordinates varchar(30)," \
+                      "user_loc varchar(30), " \
+                      "valid_tweet_id int, " \
+                      "valid_embed int,"\
+                      "language str )"
+
+
+    create_tweet_hashtag= "CREATE TABLE tweet_hashtags(tweet_hash_rel INTEGER PRIMARY KEY AUTOINCREMENT, " \
+                          "tweet_id int, hashtag varchar(30))"
+
+
+    create_user_info= "CREATE TABLE user_info (user_id int PRIMARY KEY," \
+                       "valid_user_id int)"
+
+
+    create_geo_mapping = "CREATE TABLE geo_mapping(tweet_id int PRIMARY KEY, " \
+                         "place varchar(30)," \
+                         "converted_place char(30)," \
+                         "google_api_loc varchar(100))"
+
+    #EXECUTE COMMANDS
+    cur.execute(create_tweet_txt)
+    cur.execute(create_tweet_hashtag)
+    cur.execute(create_user_info)
+    cur.execute(create_geo_mapping)
+    conn.commit()
+    conn.close()
+
+
+def tweets_to_db(tweets: dict, db_name):
+    conn = sqlite3.connect(db_name)
+    cur = conn.cursor()
+    for id, query in tweets.items():
+        print(query)
+        cur.execute(query)
+    # for tweet in tweets:
+    #     test = tweet_in_db(tweet.id, conn, "tweet_txt")
+    #     print(test)
+    #     print(tweet.sql_insert("tweet_txt"))
+    #     if not test:
+    #         cur.execute(tweet.sql_insert("tweet_txt"))
+    #         conn.commit()
+    conn.commit()
+    conn.close()
+
+
+def tweet_in_db(tweet_id, db_conn: sqlite3.connect, table_name="tweet_txt"):
+    # conn = sqlite3.connect(db_name)
+    cur = db_conn.cursor()
+    query = f"SELECT * from {table_name} WHERE tweet_id = {tweet_id}"
+    cur.execute(query)
+    rows = cur.fetchall()
+    cur.close()
+    if len(rows) > 0:
+        return True
+    else:
+        return False
 #EXAMPLE OF GET https://api.twitter.com/1.1/statuses/lookup.json?id=20,1050118621198921728
 
 if __name__ == "__main__":
-    max_idx = 20000000000000
+    max_idx = 20
     client_key = secrets.TWITTER_API_KEY
     client_secret = secrets.TWITTER_API_SECRET
     access_token = secrets.TWITTER_ACCESS_TOKEN
@@ -144,52 +258,68 @@ if __name__ == "__main__":
 
     oauth = OAuth1(client_key,
             client_secret=client_secret,
-            resource_owner_key=access_token,
             resource_owner_secret=access_token_secret)
 
     # file = open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.jsonl", "r")
-    file= open("/home/irma/PycharmProjects/RickyFinalProject/example.jsonl")
+    # file= open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.jsonl")
     # file= open("/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano.jsonl","r")
     # reader =file.readline()
-    running_idx = 0
-    kept_tweets = []
-    count_kept = 0
-    count_discard = 0
-    while True:
-        try:
-            line = file.readline()
-            line_dict = json.loads(line)
-            jobjt = json.loads(line)
-            # print("place:" + str(jobjt['place']))
-            # print("Type place: " + str(type(jobjt['place'])))
-            if keep_tweet(line):
-                print(f"Kept tweet at index {running_idx}")
-                # print(line)
-                tweet = Tweet.tweet_from_str(line)
-                print(tweet)
-                kept_tweets.append(tweet.__dict__)
-                count_kept += 1
-            else:
-                count_discard += 1
+    # running_idx = 0
+    # kept_tweets = []
+    # unkept_tweets = []
+    # all_tweets = []
+    # count_kept = 0
+    # count_discard = 0
+    # while True:
+    #     try:
+    #         line = file.readline()
+    #         # tweet = Tweet.tweet_from_str(line)
+    #         # print(tweet)
+    #         if keep_tweet(line):
+    #             print(f"Kept tweet at index {running_idx}")
+    #             # print(line)
+    #             tweet = Tweet.tweet_from_str(line)
+    #             print(tweet)
+    #             kept_tweets.append(tweet.__dict__)
+    #             count_kept += 1
+    #         else:
+    #             unkept_tweets.append(line)
+    #             count_discard += 1
+    #
+    #     except:
+    #         break
+    #     running_idx +=1
+    #     if running_idx > max_idx:
+    #         break
 
-        except:
-            break
-        running_idx +=1
-        if running_idx > max_idx:
-            break
 
+    # create_db(DB_NAME)
+    tweets = {}
+    create_db(DB_NAME)
+    file = open("/home/irma/PycharmProjects/RickyFinalProject/example.jsonl")
+    for jsonl in file:
+        # print(jsonl[:-1])
+        tweet = Tweet.tweet_from_str(jsonl)
+        if str(tweet.id) not in tweets.keys():
+            tweets.update({str(tweet.id):tweet.sql_insert("tweet_txt")})
+        else:
+            print(f"Tweet {tweet.id} duplicated.")
+        # print(tweet)
+    tweets_to_db(tweets, DB_NAME)
+    print("Tweets Saved!")
+    # file.close()
+    # print(f"Total kept: {count_kept}\nTotal discard: {count_discard}")
+    # with open('kept_tweets.json', 'w') as out_file:
+    #     json.dump(kept_tweets, out_file)
+    # cache = Embed_Cache("embed_cache.json")
+    # print("cache made")
+    # for idx in range(10, len(kept_tweets)):
+    #     params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
+    #     response = cache.get(EMBED_URL,params)
+    #     print(response)
+    #     try:
+    #         html=json.loads(response)['html']
+    #         print(html)
+    #     except:
+    #         continue
     file.close()
-    print(f"Total kept: {count_kept}\nTotal discard: {count_discard}")
-    with open('kept_tweets.json', 'w') as out_file:
-        json.dump(kept_tweets, out_file)
-    cache = Embed_Cache("embed_cache.json")
-    print("cache made")
-    for idx in range(10, len(kept_tweets)):
-        params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
-        response = cache.get(EMBED_URL,params)
-        print(response)
-        try:
-            html=json.loads(response)['html']
-            print(html)
-        except:
-            continue
