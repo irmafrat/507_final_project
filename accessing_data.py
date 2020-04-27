@@ -4,15 +4,21 @@ import requests
 import secrets
 from requests_oauthlib import OAuth1
 import sqlite3
+from os import rename
 from bs4 import BeautifulSoup
 
 
 BASE_URL= "https://twitter.com/anyuser/status/"
 EMBED_URL = "https://publish.twitter.com/oembed"
-
+DB_NAME = "protest_database.sql"
+T_TABLE = "tweet_txt"
+TH_TABLE = "tweet_hashtags"
+GEO_TABLE = "geo_mapping"
+UI_TABLE = "user_info"
 
 class Tweet:
-    def __init__(self:object, text: str, date: str, hashtags:str, source: str, id: int, user_id: str, language: str, geo=None, coordinates= None, place = None, user_location= None):
+    def __init__(self:object, text: str, date: str, hashtags:list, source: str,
+                 id: int, user_id: str, language: str, geo=None, coordinates= None, place = None, user_location= None):
         """
 
         :type self: object
@@ -29,10 +35,25 @@ class Tweet:
         self.user_location = user_location
         self.user_id = user_id
 
+
     def sql_insert(self, table_name):
         return f"INSERT INTO {table_name}" \
-               f"(tweet_id, full_text, user_id, geo, coordinates, place, user_loc, valid_tweet_id, valid_embed, language) " \
+               f"(tweet_id, full_text, date, user_id, geo, coordinates, place, user_loc, valid_tweet_id, valid_embed, language) " \
                f"VALUES {tweet.sql_values()}"
+
+    def sql_hashtags(self, table_name = "tweet_hashtags"):
+        """
+
+        :param table_name:
+            table_name is the table that holds the tweet hashtag relationship
+        :return:
+            A list of queries relating a tweet with a hashtag
+        """
+        queries = []
+        for hashtag in self.hashtags:
+            queries.append(f"INSERT INTO {table_name}(tweet_id, hashtag) VALUES ({self.id}, \"{hashtag}\")")
+        return queries
+
 # #Extracting text from the tweet
 # def extract_tweet_data(tweet_str):
 #     #Obtains the data of interest from the tweet.
@@ -59,7 +80,7 @@ class Tweet:
         #     self.language = "'" + self.language + "'"
         # else:
         #     self.language = '"' + self.language + '"'
-        return f"({self.id}, {text}, {uid}, \"{self.place}\" ," \
+        return f"({self.id}, {text}, \"{self.date}\", {uid}, \"{self.place}\" ," \
                f"\"{self.geo}\", \"{self.coordinates}\",\"{self.user_location}\", " \
                f"{self.valid_id()}, {self.valid_embed()}, \"{self.language}\")"
 
@@ -73,8 +94,9 @@ class Tweet:
     def __str__(self):
         return (
                 f"The user wrote:\n'{self.text}' \n\n" +
-                f"\tHashtags: {self.hashtags}. \n" +
-                f"\tDate: {self.date}\n\tDevice: '{self.source}'\n" +
+                f"\tHashtags: {str(self.hashtags)}. \n" +
+                f"\tDate: {self.date}\n"
+                f"\tDevice: '{self.source}'\n" +
                 f"\tID: {self.id} \n" +
                 f"\tUser Location: {self.user_location}\n" +
                 f"\tGeo: {self.geo}\n" +
@@ -98,10 +120,11 @@ class Tweet:
                      'coordinates': converted_tweet["coordinates"],
                      'user_location': converted_tweet["user"]["location"],
                      'user_id': converted_tweet["user"]["id_str"]})
+        hashtags = []
         if len(converted_tweet["entities"]["hashtags"]) > 0:
-            data.update({'hashtags' : converted_tweet["entities"]["hashtags"][0]["text"]})
-        else:
-            data.update({'hashtags' : None})
+            for hash in converted_tweet["entities"]["hashtags"]:
+                hashtags.append(hash["text"])
+        data.update({'hashtags' : hashtags})
         return data
 
     def tweet_from_str(api_json_str):
@@ -111,7 +134,7 @@ class Tweet:
         return tweet
 
     def tweet_from_dict(data: dict):
-        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['geo'],data['coordinates'], data['place'], data['user_location'], data['user_id'], data['language'])
+        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['user_id'], data['language'],data['geo'],data['coordinates'], data['place'], data['user_location'])
         return tweet
 
 
@@ -178,37 +201,38 @@ def retrive_tweet(tweet_id):
 
 
 # CONECTION AND CURSOR
-DB_NAME = "protest_database.sql"
 def create_db(db_name=DB_NAME):
+    rename(DB_NAME, DB_NAME + ".old")
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
 
 
     #SQL TABLES
-    create_tweet_txt= "CREATE TABLE tweet_txt(tweet_id UNSIGNED BIG INT PRIMARY KEY, " \
-                      "full_text char(200), " \
-                      "user_id int, " \
-                      "place varchar(30), " \
-                      "geo varchar(30), " \
-                      "coordinates varchar(30)," \
-                      "user_loc varchar(30), " \
-                      "valid_tweet_id int, " \
-                      "valid_embed int,"\
-                      "language str )"
+    create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT PRIMARY KEY, " \
+                      f"full_text char(200), " \
+                      f"date datetime,"\
+                      f"user_id int, " \
+                      f"place varchar(30), " \
+                      f"geo varchar(30), " \
+                      f"coordinates varchar(30)," \
+                      f"user_loc varchar(30), " \
+                      f"valid_tweet_id int, " \
+                      f"valid_embed int,"\
+                      f"language str )"
 
 
-    create_tweet_hashtag= "CREATE TABLE tweet_hashtags(tweet_hash_rel INTEGER PRIMARY KEY AUTOINCREMENT, " \
-                          "tweet_id int, hashtag varchar(30))"
+    create_tweet_hashtag= f"CREATE TABLE {TH_TABLE}(tweet_hash_rel INTEGER PRIMARY KEY AUTOINCREMENT, " \
+                          f"tweet_id int, hashtag varchar(30))"
 
 
-    create_user_info= "CREATE TABLE user_info (user_id int PRIMARY KEY," \
-                       "valid_user_id int)"
+    create_user_info= f"CREATE TABLE {UI_TABLE} (user_id int PRIMARY KEY," \
+                       f"valid_user_id int)"
 
 
-    create_geo_mapping = "CREATE TABLE geo_mapping(tweet_id int PRIMARY KEY, " \
-                         "place varchar(30)," \
-                         "converted_place char(30)," \
-                         "google_api_loc varchar(100))"
+    create_geo_mapping = f"CREATE TABLE {GEO_TABLE}(tweet_id int PRIMARY KEY, " \
+                         f"place varchar(30)," \
+                         f"converted_place char(30)," \
+                         f"google_api_loc varchar(100))"
 
     #EXECUTE COMMANDS
     cur.execute(create_tweet_txt)
@@ -222,9 +246,14 @@ def create_db(db_name=DB_NAME):
 def tweets_to_db(tweets: dict, db_name):
     conn = sqlite3.connect(db_name)
     cur = conn.cursor()
-    for id, query in tweets.items():
-        print(query)
+    for id, queries in tweets.items():
+        # [tweet_query, [h1, h2, ...] ]
+        query = queries[0]
+        hashtag_queries = queries[1]
+        # print(query)
         cur.execute(query)
+        for hash_query in hashtag_queries:
+            cur.execute(hash_query)
     # for tweet in tweets:
     #     test = tweet_in_db(tweet.id, conn, "tweet_txt")
     #     print(test)
@@ -236,7 +265,7 @@ def tweets_to_db(tweets: dict, db_name):
     conn.close()
 
 
-def tweet_in_db(tweet_id, db_conn: sqlite3.connect, table_name="tweet_txt"):
+def tweet_in_db(tweet_id, db_conn: sqlite3.connect, table_name=T_TABLE):
     # conn = sqlite3.connect(db_name)
     cur = db_conn.cursor()
     query = f"SELECT * from {table_name} WHERE tweet_id = {tweet_id}"
@@ -301,7 +330,7 @@ if __name__ == "__main__":
         # print(jsonl[:-1])
         tweet = Tweet.tweet_from_str(jsonl)
         if str(tweet.id) not in tweets.keys():
-            tweets.update({str(tweet.id):tweet.sql_insert("tweet_txt")})
+            tweets.update({str(tweet.id):[tweet.sql_insert(T_TABLE), tweet.sql_hashtags(TH_TABLE)]})
         else:
             print(f"Tweet {tweet.id} duplicated.")
         # print(tweet)
