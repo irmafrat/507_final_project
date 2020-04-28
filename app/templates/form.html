@@ -23,14 +23,16 @@
         <p>Select the data set you want to search:<br/>
             <input type="radio" name="database" value="RR">RickyRenuncia<br/>
             <input type="radio" name="database" value="HUPR">#HuelgaUPR tweets, April 20 - May 18 2017<br/>
-            <input type="radio" name="database" value="ALL" checked>All<br/></p>
+            <input type="radio" name="database" value="ALL" checked>All<br/>
+        </p>
         <p>Select language:
         <select name="tweet_language">
             <option value="any">Any</option>
             {% for lang in languages %}
             <option value="{{lang}}">{{lang.upper()}}</option>
             {% endfor %}
-        </select> </p>
+        </select>
+        </p>
         <p>Select User Location:
         <select name="tweet_location">
             <option value="any">Any</option>
