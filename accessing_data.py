@@ -1,4 +1,4 @@
-from irmacache import Cache, Embed_Cache
+from irmacache import Embed_Cache, Tweet_Cache
 import json
 import requests
 import secrets
@@ -7,10 +7,9 @@ import sqlite3
 from os import rename
 from bs4 import BeautifulSoup
 TWEET_EMBED_CACHE = Embed_Cache("embed_cache.json")
-TWEET_CACHE = Cache("tweet_cache.json")
-
+TWEET_CACHE = Tweet_Cache("tweet_cache.json")
 BASE_URL= "https://twitter.com/anyuser/status/"
-EMBED_URL = "https://publish.twitter.com/oembed/"
+EMBED_URL = "https://publish.twitter.com/oembed"
 DB_NAME = "/home/irma/PycharmProjects/RickyFinalProject/protest_database.sql"
 PROJECT_FILES = ["/home/irma/PycharmProjects/RickyFinalProject/rickyrenuncia2K.jsonl", "/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano2K.jsonl"]
 PROJECT_IDS = ["1", "2"]
@@ -62,20 +61,23 @@ class Tweet:
 
 
     def get_tweet_from_web(self):
-        tweet_url = BASE_URL + str(self.id)
-        response = TWEET_CACHE.get(tweet_url)
-        return response
+        base_url= "https://api.twitter.com/1.1/statuses/lookup.json"
+        params= ({"name":"example", "id":self.id})
+        response = TWEET_CACHE.get(base_url, params)
+        try:
+            result = json.loads(response)
+        except:
+            result = None
+        return result
 
     def get_embed(self):
         tweet_url = BASE_URL + str(self.id)
-        # tweet_url = tweet_url.replace("/","%2F")
-        # tweet_url = tweet_url.replace(":","%3A")
         params= {'url': tweet_url}
         response = TWEET_EMBED_CACHE.get(EMBED_URL,params)
         # print(response)
         try:
             html=json.loads(response)['html']
-            print("json.loads worked")
+            # print("json.loads worked")
         except:
             html=None
             # print("json.loads failed!")
@@ -97,7 +99,19 @@ class Tweet:
 
 
     def  valid_id(self):
-        return 0
+        t_dict = self.get_tweet_from_web()
+
+        if type(t_dict) == 'list' and len(t_dict) > 0:
+            if type(t_dict[0]) == 'dict':
+                if 'id' in t_dict.keys():
+                    valid = 1
+                else:
+                    valid = 0
+            else:
+                valid = 0
+        else:
+            valid = 0
+        return valid
 
     def valid_embed(self):
         if self.get_embed() is None:
@@ -125,8 +139,11 @@ class Tweet:
         #Obtains the data of interest from the tweet.
         converted_tweet = json.loads(tweet_str)
         data = {}
-        data.update({'text' : converted_tweet["full_text"],
-                     'date' : converted_tweet["created_at"],
+        if "full_text" in converted_tweet.keys():
+            data.update({'text' : converted_tweet["full_text"]})
+        else:
+            data.update({'text' : converted_tweet["text"]})
+        data.update({'date' : converted_tweet["created_at"],
                      'source' : converted_tweet["source"],
                      'id' : int(converted_tweet["id"]),
                      'language': converted_tweet["lang"],
@@ -193,19 +210,19 @@ def tweet_id(tweet_str):
 # Using tweet id to get link of the tweet
 def retrive_tweet(tweet_id):
     #Connects to the Twitter API and returns the twiter link:
-    client_key = secrets.TWITTER_API_KEY
-    client_secret = secrets.TWITTER_API_SECRET
-    access_token = secrets.TWITTER_ACCESS_TOKEN
-    access_token_secret = secrets.TWITTER_ACCESS_TOKEN_SECRET
-
-    oauth = OAuth1(client_key,
-            client_secret=client_secret,
-            resource_owner_secret=access_token_secret)
+    # client_key = secrets.TWITTER_API_KEY
+    # client_secret = secrets.TWITTER_API_SECRET
+    # access_token = secrets.TWITTER_ACCESS_TOKEN
+    # access_token_secret = secrets.TWITTER_ACCESS_TOKEN_SECRET
+    #
+    # oauth = OAuth1(client_key=client_key,
+    #         client_secret=client_secret)
     base_url= "https://api.twitter.com/1.1/statuses/lookup.json"
-    params= ({"id":tweet_id})
-    response = requests.get(base_url, params, auth=oauth).json()
-    result= response
-    return result
+    params= ({"name":"example", "id":tweet_id})
+    response = TWEET_CACHE.get(base_url, params)
+    return response
+    # result= response
+    # return result
 
 
 # CONECTION AND CURSOR
@@ -310,7 +327,11 @@ def tweet_in_db(tweet_id, db_conn: sqlite3.connect, table_name=T_TABLE):
 
 
 def load_tweets(project_file, project_id, db_name=DB_NAME):
+    print(f"Loading Project-{project_id} into {DB_NAME.split('/')[-1]}")
     file = open(project_file)
+    tweets={}
+    counter = 0
+    erase_len = 0
     for jsonl in file:
         # print(jsonl[:-1])
         tweet = Tweet.tweet_from_str(jsonl, project_id)
@@ -319,89 +340,36 @@ def load_tweets(project_file, project_id, db_name=DB_NAME):
         else:
             print(f"Tweet {tweet.id} duplicated.")
         # print(tweet)
+        counter += 1
+        erase_buf = "\b"*erase_len
+        message = f"Done with {counter}"
+        erase_len = len(message)
+        print(erase_buf + message, end="")
+    print("")
     tweets_to_db(tweets, db_name)
     print("Tweets from " + project_file + " Saved!")
 
-if __name__ == "__main__":
-    r = retrive_tweet(1151300011151564800)
+
+def obama_test(tweet_id=1254823167937445890):
+    r = retrive_tweet(tweet_id)
     print(r)
+    r_l = json.loads(r)
+    print(len(r_l))
+    print(str(r_l[0].keys()))
+    bo_tweet = Tweet.tweet_from_str(r[1:-1], 0)
+    # print(bo_tweet)
+    print(bo_tweet.get_embed())
     i = input("hey")
-    max_idx = 20
-    client_key = secrets.TWITTER_API_KEY
-    client_secret = secrets.TWITTER_API_SECRET
-    access_token = secrets.TWITTER_ACCESS_TOKEN
-    access_token_secret = secrets.TWITTER_ACCESS_TOKEN_SECRET
 
-    oauth = OAuth1(client_key,
-            client_secret=client_secret,
-            resource_owner_secret=access_token_secret)
-
-    # file = open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.jsonl", "r")
-    # file= open("/home/irma/PycharmProjects/RickyFinalProject/RickyRenunciaLlevateJunta.jsonl")
-    # file= open("/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano.jsonl","r")
-    # reader =file.readline()
-    # running_idx = 0
-    # kept_tweets = []
-    # unkept_tweets = []
-    # all_tweets = []
-    # count_kept = 0
-    # count_discard = 0
-    # while True:
-    #     try:
-    #         line = file.readline()
-    #         # tweet = Tweet.tweet_from_str(line)
-    #         # print(tweet)
-    #         if keep_tweet(line):
-    #             print(f"Kept tweet at index {running_idx}")
-    #             # print(line)
-    #             tweet = Tweet.tweet_from_str(line)
-    #             print(tweet)
-    #             kept_tweets.append(tweet.__dict__)
-    #             count_kept += 1
-    #         else:
-    #             unkept_tweets.append(line)
-    #             count_discard += 1
-    #
-    #     except:
-    #         break
-    #     running_idx +=1
-    #     if running_idx > max_idx:
-    #         break
-
-
+if __name__ == "__main__":
+    # obama_test()
+    # obama_test(1151264922984243200)
     # create_db(DB_NAME)
-    tweets = {}
-    create_db(DB_NAME)
-    for idx in range(len(PROJECT_NAME)):
-        add_project(PROJECT_IDS[idx], PROJECT_NAME[idx], DB_NAME)
+    # for idx in range(len(PROJECT_NAME)):
+    #     add_project(PROJECT_IDS[idx], PROJECT_NAME[idx], DB_NAME)
 
     # load_tweets("/home/irma/PycharmProjects/RickyFinalProject/rand_rickyrenuncia.jsonl", PROJECT_IDS[0], DB_NAME)
-    load_tweets("/home/irma/PycharmProjects/RickyFinalProject/example_tail.jsonl", PROJECT_IDS[0], DB_NAME)
-    # # file = open(PROJECT_FILES[0])
-    # file = open("/home/irma/PycharmProjects/RickyFinalProject/rand_rickyrenuncia.jsonl")
-    # for jsonl in file:
-    #     # print(jsonl[:-1])
-    #     tweet = Tweet.tweet_from_str(jsonl, PROJECT_IDS[0])
-    #     if str(tweet.id) not in tweets.keys():
-    #         tweets.update({str(tweet.id):[tweet.sql_insert(T_TABLE), tweet.sql_hashtags(TH_TABLE)]})
-    #     else:
-    #         print(f"Tweet {tweet.id} duplicated.")
-    #     # print(tweet)
-    # tweets_to_db(tweets, DB_NAME)
-    # print("Tweets Saved!")
-    # file.close()
-    # print(f"Total kept: {count_kept}\nTotal discard: {count_discard}")
-    # with open('kept_tweets.json', 'w') as out_file:
-    #     json.dump(kept_tweets, out_file)
-    # cache = Embed_Cache("embed_cache.json")
-    # print("cache made")
-    # for idx in range(10, len(kept_tweets)):
-    #     params= {'url': BASE_URL + str(kept_tweets[idx]['id'])}
-    #     response = cache.get(EMBED_URL,params)
-    #     print(response)
-    #     try:
-    #         html=json.loads(response)['html']
-    #         print(html)
-    #     except:
-    #         continue
-    # file.close()
+    for idx in range(len(PROJECT_IDS)):
+        load_tweets(PROJECT_FILES[idx], PROJECT_IDS[idx], DB_NAME)
+
+

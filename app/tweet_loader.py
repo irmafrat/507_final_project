@@ -5,6 +5,8 @@ class Tweet_DB:
     def __init__(self, db_name=DB_NAME):
         self.db_name = db_name
 
+    def search(self):
+
     def get_languages(self):
         conn = sqlite3.connect(self.db_name)
         cur = conn.cursor()
