@@ -10,7 +10,9 @@ from bs4 import BeautifulSoup
 
 BASE_URL= "https://twitter.com/anyuser/status/"
 EMBED_URL = "https://publish.twitter.com/oembed"
-DB_NAME = "protest_database.sql"
+DB_NAME = "/home/irma/PycharmProjects/RickyFinalProject/protest_database.sql"
+PROJECT_FILES = ["/home/irma/PycharmProjects/RickyFinalProject/rickyrenuncia2K.jsonl", "/home/irma/PycharmProjects/RickyFinalProject/luchaSiEntregano2K.jsonl"]
+PROJECT_IDS = ["RR-2019", "HUPR-2017"]
 T_TABLE = "tweet_txt"
 TH_TABLE = "tweet_hashtags"
 GEO_TABLE = "geo_mapping"
@@ -18,7 +20,7 @@ UI_TABLE = "user_info"
 
 class Tweet:
     def __init__(self:object, text: str, date: str, hashtags:list, source: str,
-                 id: int, user_id: str, language: str, geo=None, coordinates= None, place = None, user_location= None):
+                 id: int, user_id: str, language: str, project_id: str, geo=None, coordinates= None, place = None, user_location= None):
         """
 
         :type self: object
@@ -34,6 +36,7 @@ class Tweet:
         self.place= place
         self.user_location = user_location
         self.user_id = user_id
+        self.project_id = project_id
 
 
     def sql_insert(self, table_name):
@@ -73,6 +76,7 @@ class Tweet:
             uid = "Null"
         text = self.text
         if '"' in text:
+            text = text.replace("'", "''")
             text = "'" + text + "'"
         else:
             text = '"' + text + '"'
@@ -118,7 +122,7 @@ class Tweet:
                      'geo': converted_tweet["geo"],
                      'place': converted_tweet["place"],
                      'coordinates': converted_tweet["coordinates"],
-                     'user_location': converted_tweet["user"]["location"],
+                     'user_location': converted_tweet["user"]["location"].strip(), # striping spaces
                      'user_id': converted_tweet["user"]["id_str"]})
         hashtags = []
         if len(converted_tweet["entities"]["hashtags"]) > 0:
@@ -127,14 +131,14 @@ class Tweet:
         data.update({'hashtags' : hashtags})
         return data
 
-    def tweet_from_str(api_json_str):
+    def tweet_from_str(api_json_str, project_id):
         # print(api_json_str)
         data = Tweet.extract_tweet_data(api_json_str)
-        tweet = Tweet.tweet_from_dict(data)
+        tweet = Tweet.tweet_from_dict(data, project_id)
         return tweet
 
-    def tweet_from_dict(data: dict):
-        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['user_id'], data['language'],data['geo'],data['coordinates'], data['place'], data['user_location'])
+    def tweet_from_dict(data: dict, project_id: str):
+        tweet = Tweet(data['text'], data['date'], data['hashtags'], data['source'], data['id'], data['user_id'], data['language'], project_id, data['geo'],data['coordinates'], data['place'], data['user_location'])
         return tweet
 
 
@@ -250,7 +254,7 @@ def tweets_to_db(tweets: dict, db_name):
         # [tweet_query, [h1, h2, ...] ]
         query = queries[0]
         hashtag_queries = queries[1]
-        # print(query)
+        print(query)
         cur.execute(query)
         for hash_query in hashtag_queries:
             cur.execute(hash_query)
@@ -325,10 +329,11 @@ if __name__ == "__main__":
     # create_db(DB_NAME)
     tweets = {}
     create_db(DB_NAME)
-    file = open("/home/irma/PycharmProjects/RickyFinalProject/example.jsonl")
+    # file = open(PROJECT_FILES[0])
+    file = open("/home/irma/PycharmProjects/RickyFinalProject/rand_rickyrenuncia.jsonl")
     for jsonl in file:
         # print(jsonl[:-1])
-        tweet = Tweet.tweet_from_str(jsonl)
+        tweet = Tweet.tweet_from_str(jsonl, PROJECT_IDS[0])
         if str(tweet.id) not in tweets.keys():
             tweets.update({str(tweet.id):[tweet.sql_insert(T_TABLE), tweet.sql_hashtags(TH_TABLE)]})
         else:
