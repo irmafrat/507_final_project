@@ -19,11 +19,11 @@
         <li><a href="https://catalog.docnow.io/datasets/20170519-huelgaupr-tweets-april-20-may-18-2017/" target="#HuelgaUPR tweets, April 20 - May 18 2017">#HuelgaUPR tweets, April 20 - May 18 2017</a></li>
     </ul>
     <form action="/handle_form" method="POST">
-        <p>Enter a word to search in the tweets full text and hashtags <input text="text" type="text"/><br/></p>
+        <p>Enter a word to search in the tweets full text and hashtags <input text="search_query" type="text"/><br/></p>
         <p>Select the data set you want to search:<br/>
-            <input type="radio" name="database" value="1">RickyRenuncia<br/>
-            <input type="radio" name="database" value="2">#HuelgaUPR tweets, April 20 - May 18 2017<br/>
-            <input type="radio" name="database" value="ALL" checked>All<br/>
+            <input type="radio" name="project" value="1">RickyRenuncia<br/>
+            <input type="radio" name="project" value="2">#HuelgaUPR tweets, April 20 - May 18 2017<br/>
+            <input type="radio" name="project" value="all" checked>All<br/>
         </p>
         <p>Select language:
         <select name="tweet_language">
@@ -40,7 +40,7 @@
             <option value="{{loc}}">{{loc}}</option>
             {% endfor %}
         </select> </p>
-
+    <p><input type = "submit" value = "submit" /></p>
     </form>
 
 <!--    -->

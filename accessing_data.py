@@ -43,7 +43,7 @@ class Tweet:
 
     def sql_insert(self, table_name):
         return f"INSERT INTO {table_name}" \
-               f"(tweet_id, full_text, date, user_id, geo, coordinates, place, user_loc, valid_tweet_id, valid_embed, language, project_id) " \
+               f"(tweet_id, full_text, create_at, user_id, geo, coordinates, place, user_loc, valid_tweet_id, valid_embed, lang, project_id) " \
                f"VALUES {self.sql_values()}"
 
     def sql_hashtags(self, table_name = "tweet_hashtags"):
@@ -135,6 +135,15 @@ class Tweet:
                 f"\tLanguage: {self.language}\n"
         )
 
+    def create_at_to_datetime(ca_time: str):
+        "Fri Apr 14 00:04:54 +0000 2017"
+        M_to_N = {
+            "Jan":"01", "Feb": "02","Mar":"03", "Apr":"04", "May":"05", "Jun":"06", "Jul": "07", "Aug": "08", "Sep": "09", "Oct":"10", "Nov": "11", "Dec": "12"
+        }
+        ca_time = ca_time.split(" ")
+        dt_format = ca_time[-1] + "-" + M_to_N[ca_time[1]] + "-" + ca_time[2] + " " + ca_time[3]
+        return dt_format
+
     def extract_tweet_data(tweet_str):
         #Obtains the data of interest from the tweet.
         converted_tweet = json.loads(tweet_str)
@@ -143,7 +152,7 @@ class Tweet:
             data.update({'text' : converted_tweet["full_text"]})
         else:
             data.update({'text' : converted_tweet["text"]})
-        data.update({'date' : converted_tweet["created_at"],
+        data.update({'date' : Tweet.create_at_to_datetime(converted_tweet["created_at"]),
                      'source' : converted_tweet["source"],
                      'id' : int(converted_tweet["id"]),
                      'language': converted_tweet["lang"],
@@ -235,7 +244,7 @@ def create_db(db_name=DB_NAME):
     #SQL TABLES
     create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT, " \
                       f"full_text char(200), " \
-                      f"date datetime,"\
+                      f"create_at datetime,"\
                       f"user_id int, " \
                       f"place varchar(30), " \
                       f"geo varchar(30), " \
@@ -243,7 +252,7 @@ def create_db(db_name=DB_NAME):
                       f"user_loc varchar(30), " \
                       f"valid_tweet_id int, " \
                       f"valid_embed int,"\
-                      f"language str , " \
+                      f"lang str , " \
                       f"project_id int, " \
                       f"PRIMARY KEY(project_id, tweet_id), " \
                       f"CONSTRAINT fk_column " \
@@ -364,9 +373,9 @@ def obama_test(tweet_id=1254823167937445890):
 if __name__ == "__main__":
     # obama_test()
     # obama_test(1151264922984243200)
-    # create_db(DB_NAME)
-    # for idx in range(len(PROJECT_NAME)):
-    #     add_project(PROJECT_IDS[idx], PROJECT_NAME[idx], DB_NAME)
+    create_db(DB_NAME)
+    for idx in range(len(PROJECT_NAME)):
+        add_project(PROJECT_IDS[idx], PROJECT_NAME[idx], DB_NAME)
 
     # load_tweets("/home/irma/PycharmProjects/RickyFinalProject/rand_rickyrenuncia.jsonl", PROJECT_IDS[0], DB_NAME)
     for idx in range(len(PROJECT_IDS)):
