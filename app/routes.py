@@ -2,7 +2,6 @@ from flask import render_template, request
 import json
 from app import app
 from app.tweet_loader import Tweet_DB, DB_NAME
-from irmacache import Embed_Cache
 from accessing_data import BASE_URL,EMBED_URL, TWEET_EMBED_CACHE
 tweet_db = Tweet_DB(DB_NAME)
 

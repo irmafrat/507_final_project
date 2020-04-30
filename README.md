@@ -47,12 +47,12 @@ This information will be transformed into a dictionary in order to facilitate th
 #### Program running with and without cache
 
 Currently, if the program runs without cache, it will display only the information selected.
-        [Photo of the program running without the cache commands](https://drive.google.com/uc?export=view&id=1irtGTyhjnMa7j5Lh31j8mK_t3kkqB2zu)
+![Photo of the program running without the cache commands](https://drive.google.com/uc?export=view&id=1irtGTyhjnMa7j5Lh31j8mK_t3kkqB2zu)
 
 
 While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
 If the tweet has not been deleted, it will display a string of the tweet.
-        [Photo of the program running with cache](https://drive.google.com/uc?export=view&id=1rCmSYWNBSm_4kYVIjnFVFxG2dmcVhY4X)
+![Photo of the program running with cache](https://drive.google.com/uc?export=view&id=1rCmSYWNBSm_4kYVIjnFVFxG2dmcVhY4X)
 
 #### Cache code  and called used in the program
 I created a class called Cache and use it on the program
