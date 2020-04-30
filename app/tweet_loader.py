@@ -46,7 +46,10 @@ class Tweet_DB:
         return and_conditional
 
     def search_count(self, search_query='', select_project='any',select_language='any',select_location='any'):
-        query= f"SELECT COUNT(tweet_id) FROM {T_TABLE} WHERE " + Tweet_DB.search_conditions(search_query, select_project, select_language,select_location)
+        conditions = Tweet_DB.search_conditions(search_query, select_project, select_language,select_location)
+        query= f"SELECT COUNT(tweet_id) FROM {T_TABLE}"
+        if conditions != "":
+            query += " WHERE " + conditions
         conn = sqlite3.connect(self.db_name)
         cur = conn.cursor()
         cur.execute(query)
@@ -99,6 +102,15 @@ class Tweet_DB:
         rows.sort()
         return tuple(rows)
 
+    def get_tweet(self, tweet_id, columns=["create_at", "user_loc", "full_text","tweet_id","valid_embed"]):
+        conn = sqlite3.connect(self.db_name)
+        cur = conn.cursor()
+        query = f"SELECT {', '.join(columns)} FROM {T_TABLE} WHERE tweet_id={tweet_id}"
+        cur.execute(query)
+        rows = cur.fetchall()
+        cur.close()
+        conn.close()
+        return rows
 
 
 if __name__=="__main__":

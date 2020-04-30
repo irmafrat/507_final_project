@@ -1,7 +1,25 @@
 from flask import render_template, request
+import json
 from app import app
 from app.tweet_loader import Tweet_DB, DB_NAME
+from irmacache import Embed_Cache
+from accessing_data import BASE_URL,EMBED_URL, TWEET_EMBED_CACHE
 tweet_db = Tweet_DB(DB_NAME)
+
+def get_embed(tweet_id):
+    tweet_url = BASE_URL + str(tweet_id)
+    params= {'url': tweet_url}
+    response = TWEET_EMBED_CACHE.get(EMBED_URL,params)
+    # print(response)
+    # print(type(response))
+    try:
+        html=json.loads(response)['html']
+        # print("json.loads worked")
+    except:
+        html=""
+        # print("json.loads failed!")
+    return html
+
 
 
 @app.route('/')
@@ -11,14 +29,15 @@ def index():
     return render_template("form.html", locations=locations, languages=languages)
 
 
-# @app.route('/handle_form', methods=['POST'])
-# def handle_the_form():
-#     return render_template("response.html")
-
-
 @app.route('/search/<page>/', methods=['GET'])
 def search_results(page):
     page = int(page)
+    # sq= request.args.get("search_query")
+    # if sq == "":
+    #     sq =
+    print(type(request.args.get("search_query")))
+    print(f"#{request.args.get('search_query')}#")
+    args_str = request.url.split("?")[1]
     if request.method == 'GET':
 
         total_pages= tweet_db.search_pages(search_query=request.args.get("search_query"), select_project=request.args.get("project"),
@@ -28,22 +47,17 @@ def search_results(page):
         else:
             rows = tweet_db.search(search_query=request.args.get("search_query"), select_project=request.args.get("project"),
                                            select_language=request.args.get("tweet_language"),select_location=request.args.get("tweet_location"),page= page)
-            return render_template("grid.html", page=page, total_pages=total_pages, rows=rows)
+            return render_template("grid.html", page=page, total_pages=total_pages, rows=rows, args_str=args_str)
 
 
 
-
-
-# EXAMPLE CODE TO MANAGE REQUEST/POST FROM THE USER
-# @app.route('/success/<name>')
-# def success(name):
-#    return 'welcome %s' % name
-#
-# @app.route('/login',methods = ['POST', 'GET'])
-# def login():
-#    if request.method == 'POST':
-#       user = request.form['nm']
-#       return redirect(url_for('success',name = user))
-#    else:
-#       user = request.args.get('nm')
-#       return redirect(url_for('success',name = user))
+@app.route('/tweet/<tweet_id>')
+def display_tweet(tweet_id):
+    tweet_data= tweet_db.get_tweet(int(tweet_id))
+    if len(tweet_data) < 1:
+        return f"Tweet {tweet_id} not in database."
+    else:
+        tweet = tweet_data[0]
+        embed_html= get_embed(tweet_id)
+        print(embed_html)
+        return render_template("tweet.html",tweet=tweet, embed_html=embed_html)

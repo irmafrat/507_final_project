@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf8"/>
+    <title>Tweet - {{tweet[3]}}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/default.css') }}"/>
+</head>
+<body>
+	{% if tweet[4] == 1%}
+		<p>Displaying tweet <a href="https://twitter.com/anyuser/status/{{tweet[3]}}">{{tweet[3]}}</a>: </p>
+		{{embed_html|safe}}
+	{% else %}
+		<p>Tweet embeding not available for tweet <a href="https://twitter.com/anyuser/status/{{tweet[3]}}">{{tweet[3]}}</a>.</p>
+	{% endif %}
+</body>
+</html>

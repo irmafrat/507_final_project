@@ -6,15 +6,22 @@
 </head>
 <body>
     <h3>Page: {{page}} of {{total_pages}}</h3>
+    {% if page > 1 %}
+    <a href="/search/{{page -1}}/?{{args_str}}">Prev</a>
+    {% endif %}
+    {% if page < total_pages %}
+    <a href="/search/{{page +1}}/?{{args_str}}">Next</a>
+    {% endif %}
     <div class = "wrapper">
         <div class="header"> Created At</div>
         <div class="header"> User_Location </div>
         <div class="header"> Text </div>
         <div class="header"> Tweet ID </div>
         {% for row in rows %}
-            {% for val in row %}
-            <div> {{val}}</div>
-            {% endfor %}
+        <div>{{row[0]}}</div>
+        <div>{{row[1]}}</div>
+        <div>{{row[2]}}</div>
+        <div><a href="/tweet/{{row[3]}}">{{row[3]}}</a></div>
         {% endfor %}
     </div>
 </body>
