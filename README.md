@@ -2,8 +2,8 @@
 # Recent protest movement in Puerto Rico
 
 ## This project plans to create a database that gather, displays and allows the user to search tweets related to the following events :
-    *[University of Puerto Rico Student Protest(2017)](https://catalog.docnow.io/datasets/20170519-huelgaupr-tweets-april-20-may-18-2017/)
-    *[Ricky Renuncia Protest(2019)](https://catalog.docnow.io/datasets/20190930-rickyrenuncia/)
+*[University of Puerto Rico Student Protest(2017)](https://catalog.docnow.io/datasets/20170519-huelgaupr-tweets-april-20-may-18-2017/)
+*[Ricky Renuncia Protest(2019)](https://catalog.docnow.io/datasets/20190930-rickyrenuncia/)
 
 ## Instructions to run the program:
 1. Clone or Download the project.
