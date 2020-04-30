@@ -7,7 +7,7 @@
 
 ## Instructions to run the program:
 1. Clone or Download the project.
-2. Make sure that you have the packages used in the project installed. (They are listed below this instructions).
+2. Make sure that you have the packages used in the project installed. (They are listed below these instructions).
 3. Run the accessing_data.py file in your terminal to generate the SQL database and Cache files.
 4. Run the app.py file in your terminal and access the url.
 5. The URL will open a browser will the front-end of the database.
@@ -15,7 +15,7 @@
 
 ### Packages used in the project:
 1. Hydrator - To gather the JSONL tweets
-2. Flask - To develop a front end for the database
+2. Flask - To develop a front end for form the database
 3. Sqlite3 - To develop the database
 4. OAuth1 - To manage the program authorization
 5. Time - To manage [Twitter Rate Limits](https://developer.twitter.com/en/docs/basics/rate-limiting).
@@ -26,7 +26,7 @@
 9. Secrets
 
 
-### Data Provenance
+## Data Provenance
 
 |    DATA    |    FORMAT     |     URL     |
 ------------ | ------------- | -------------
@@ -38,7 +38,7 @@
 
 The datasets were available through the [Documenting the Now tweet catalog](https://catalog.docnow.io/).
 Both datasets were txt files that contained tweets ids.
-Using the TWARC package and the Hydrator, both created by Documenting the Now, the program is able to retrieve the full record of the tweets.
+Using the Hydrator, program created by Documenting the Now, this app is able to retrieve the full record of the tweets.
 
 |    DATA    |    ORIGINAL FILE RETRIEVAL   |   QUANTITY USED IN THE DATABASE    |   FORMAT     | CODE TO SELECT TWEETS GENERATE A SMALLER SAMPLE |
 |------------| --------------------------   | ---------------------------------- | ------------ | -------------|
@@ -49,7 +49,7 @@ Using the TWARC package and the Hydrator, both created by Documenting the Now, t
 ### Cache Implementation
 
 The project is using cache to store the embedded tweets with an id of the user in order to provide a display and a link to the tweet.
-It is important to mention that Twitter do controls the tweets that are visible to the public. Twitter only displays the [3,200 most recent tweets] of the user.(https://help.twitter.com/en/using-twitter/missing-tweets)
+It is important to mention that Twitter do controls the tweets that are visible to the public. Twitter only displays the [3,200 most recent tweets](https://help.twitter.com/en/using-twitter/missing-tweets) of the user.
 This affects the behavior of the cache and the display of the tweet in the program.
 
 ### Description of records
