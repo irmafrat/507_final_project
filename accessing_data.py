@@ -5,7 +5,6 @@ import secrets
 from requests_oauthlib import OAuth1
 import sqlite3
 from os import rename
-from bs4 import BeautifulSoup
 TWEET_EMBED_CACHE = Embed_Cache("embed_cache.json")
 TWEET_CACHE = Tweet_Cache("tweet_cache.json")
 BASE_URL= "https://twitter.com/anyuser/status/"
