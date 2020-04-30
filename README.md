@@ -48,27 +48,23 @@ This information will be transformed into a dictionary in order to facilitate th
 
 Currently, if the program runs without cache, it will display only the information selected.
 
-![Photo of the program running without the cache commands]
-(https://github.com/irmafrat/507_final_project/blob/master/readme_images/Program_No_Cache.png)
+![Photo of the program running without the cache commands](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Program_No_Cache.png)
 
 
 While if the program is running with cache it wll display if a tweet has been deleted or not from the internet.
 If the tweet has not been deleted, it will display a string of the tweet.
 
-![Photo of the program running with cache]
-(https://github.com/irmafrat/507_final_project/blob/master/readme_images/Program_Yes_Cache.png)
+![Photo of the program running with cache](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Program_Yes_Cache.png)
 
 #### Cache code  and called used in the program
 I created a class called Cache and use it on the program
 
-![Photo of the cache Code]
-(https://github.com/irmafrat/507_final_project/blob/master/readme_images/Cache_Code.png)
+![Photo of the cache Code](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Cache_Code.png)
 
 
 Cache class code implemented in the program
 
-![Photo of the program code]
-(https://github.com/irmafrat/507_final_project/blob/master/readme_images/Cache_Implementation.png)
+![Photo of the program code](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Cache_Implementation.png)
 
 
 ### Database (Working)
