@@ -28,10 +28,10 @@
 
 ### Data Provenance
 
-|    DATA     |    FORMAT     |     URL     |
+|    DATA    |    FORMAT     |     URL     |
 ------------ | ------------- | -------------
-|Ricky Renuncia Protest | JSONL | https://archive.org/details/tweetsRickyRenuncia-final|
-|HuelgaUPRTweets | JSONL | https://archive.org/details/tweet-ids_HuelgaUPR20170420-0518|
+|[Ricky Renuncia Protest | JSONL | https://catalog.docnow.io/datasets/20190930-rickyrenuncia/|
+|[HuelgaUPRTweets | JSONL | https://catalog.docnow.io/datasets/20170519-huelgaupr-tweets-april-20-may-18-2017/|
 |Embeded Tweets  | JSON  | Twitter API Response |
 
 ### Data Access: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest)
@@ -46,7 +46,7 @@ Using the TWARC package and the Hydrator, both created by Documenting the Now, t
 |HuelgaUPRTweets | 19,914 | 2,000 | JSONL | shuf -n 2000 luchaSiEntregano.jsonl > luchaSiEntregano2k.jsonl |
 
 
-###Cache Implementation
+### Cache Implementation
 
 The project is using cache to store the embedded tweets with an id of the user in order to provide a display and a link to the tweet.
 It is important to mention that Twitter do controls the tweets that are visible to the public. Twitter only displays the [3,200 most recent tweets] of the user.(https://help.twitter.com/en/using-twitter/missing-tweets)
