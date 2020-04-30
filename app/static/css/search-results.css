@@ -1,0 +1,21 @@
+.wrapper{display:grid;
+    grid-template-columns: 2fr 3fr 6fr 3fr;
+    grid-gap:  0.5em;
+    grid-auto-rows: minmax(100px,auto);
+}
+
+.wrapper > div {
+    background: #eee;
+    padding: 1em;
+}
+
+.wrapper > div: nth-child(odd){
+    background: #ddd;
+}
+
+.wrapper > div.header{
+    background: #202020;
+    color: #dddd;
+    font-weight: bold;
+
+}

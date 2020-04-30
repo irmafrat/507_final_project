@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Protest_DB_Results_CSS</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search-results.css') }}"/>
+</head>
+<body>
+    <h3>Page: {{page}} of {{total_pages}}</h3>
+    <div class = "wrapper">
+        <div class="header"> Created At</div>
+        <div class="header"> User_Location </div>
+        <div class="header"> Text </div>
+        <div class="header"> Tweet ID </div>
+        {% for row in rows %}
+            {% for val in row %}
+            <div> {{val}}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</body>
+</html>
