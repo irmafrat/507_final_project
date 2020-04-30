@@ -79,7 +79,10 @@ The tables and their relation are the following:
 ![Photo of project protest_database](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Entity%20Relationship%20Diagram%20(UML%20Notation).jpeg)
 
 
-![Photo of project protest database with data] (https://github.com/irmafrat/507_final_project/blob/master/readme_images/database.png)
+
+
+![Photo of project protest database with data](https://github.com/irmafrat/507_final_project/blob/master/readme_images/database.png)
+
 
 
  ### Interaction and Presentation Plans (Working)
