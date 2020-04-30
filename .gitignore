@@ -6,5 +6,4 @@ RickyRenunciaLlevateJunta.jsonl
 *.txt
 rickyrenunciaparts
 /photos/
-*.sql
 *.sql.old
