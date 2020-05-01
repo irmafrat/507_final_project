@@ -73,7 +73,7 @@ Photo of ERD Diagram for protest_database
 
 #### Code developed to create the database:
 
-'''
+```
 
 SQL TABLES
 create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT, " \
@@ -101,7 +101,7 @@ create_tweet_hashtag= f"CREATE TABLE {TH_TABLE}(tweet_hash_rel INTEGER PRIMARY K
               f"FOREIGN KEY (tweet_id) " \
               f"REFERENCES {T_TABLE}(tweet_id))"
 
-'''
+```
 
 
 Photo of project protest database with data. I am using SQLite Browser to navigate my database.
