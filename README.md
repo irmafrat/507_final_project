@@ -74,7 +74,7 @@ Photo of ERD Diagram for protest_database
 #### Code developed to create the database:
 
 '''
-#SQL TABLES
+    #SQL TABLES
     create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT, " \
                       f"full_text char(200), " \
                       f"create_at datetime,"\
