@@ -66,11 +66,40 @@ It is important to mention that the localization data and the language data does
 This project will create one database with 3 tables.
 The tables and their relation are the following:
 
+![Photo of project protest_database](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Entity%20Relationship%20Diagram%20(UML%20Notation).jpeg)
+
 Photo of ERD Diagram for protest_database
 
 
-![Photo of project protest_database](https://github.com/irmafrat/507_final_project/blob/master/readme_images/Entity%20Relationship%20Diagram%20(UML%20Notation).jpeg)
+#### Code developed to create the database:
 
+'''
+#SQL TABLES
+    create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT, " \
+                      f"full_text char(200), " \
+                      f"create_at datetime,"\
+                      f"user_id int, " \
+                      f"place varchar(30), " \
+                      f"geo varchar(30), " \
+                      f"coordinates varchar(30)," \
+                      f"user_loc varchar(30), " \
+                      f"valid_tweet_id int, " \
+                      f"valid_embed int,"\
+                      f"lang str , " \
+                      f"project_id int, " \
+                      f"PRIMARY KEY(project_id, tweet_id), " \
+                      f"CONSTRAINT fk_column " \
+                      f"FOREIGN KEY (project_id) " \
+                      f"REFERENCES {PROJECT_TABLE}(project_id))"
+
+    create_project = f"CREATE TABLE {PROJECT_TABLE}(project_id int PRIMARY KEY, name str)"
+
+    create_tweet_hashtag= f"CREATE TABLE {TH_TABLE}(tweet_hash_rel INTEGER PRIMARY KEY AUTOINCREMENT, " \
+                          f"tweet_id int, hashtag varchar(30)," \
+                          f"CONSTRAINT fk_column " \
+                          f"FOREIGN KEY (tweet_id) " \
+                          f"REFERENCES {T_TABLE}(tweet_id))"
+'''
 
 
 Photo of project protest database with data. I am using SQLite Browser to navigate my database.
@@ -93,7 +122,7 @@ I am using to use Flask to display the form and table.
 #### Instructions to run the program:
 
 1. Clone or Download the project.
-2. Make sure that you have the packages used in the project installed. (They are listed above these instructions).
+2. Make sure that you have the packages used in the project installed. (They are listed above).
 3. Run the accessing_data.py file in your terminal to generate the SQL database and Cache files.
 4. Run the app.py file in your terminal and access the url.
 5. The URL will open a browser will the front-end of the database.
