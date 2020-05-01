@@ -125,7 +125,7 @@ With this metadata, the user will see a table displaying the data requested and 
 If the user wants to see the embedded tweet, it just needs to click on the tweet id number.
 if the tweet has been deleted the user will see the tweet id and a warning message.
 
-I am using Flask to display the form and table.
+I am using Flask to display the form and table and also used CSS Grid to style the results page.
 
 #### Instructions to run the program:
 
