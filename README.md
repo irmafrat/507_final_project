@@ -71,7 +71,7 @@ This information will be transformed into a dictionary in order to facilitate th
 It is important to mention that the localization data and the language data does not refer to the actual location or language of the tweet, it refeers to the location and language that the user decided to identify with.
 
 
-### Database (Working)
+### Database
 This project will create one database with 3 tables.
 The tables and their relation are the following:
 
@@ -89,7 +89,9 @@ Photo of project protest database with data. I am using SQLite Browser to naviga
 
 
 
- ### Interaction and Presentation Plans (Working)
+### Interaction and Presentation Plans
+
+![GIF displaying program implementation](https://github.com/irmafrat/507_final_project/blob/master/readme_images/app_implementation.gif)
 
 With this program the user will be able to search a database of tweets related to historical events in Puerto Rico.
 The user will be able to fill a form setting up the dates, keywords, hashtags, and locations.
