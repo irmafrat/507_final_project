@@ -100,7 +100,6 @@ create_tweet_hashtag= f"CREATE TABLE {TH_TABLE}(tweet_hash_rel INTEGER PRIMARY K
               f"CONSTRAINT fk_column " \
               f"FOREIGN KEY (tweet_id) " \
               f"REFERENCES {T_TABLE}(tweet_id))"
-
 '''
 
 
