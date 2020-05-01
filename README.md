@@ -10,8 +10,8 @@
 
 |    DATA    |    FORMAT     |     URL     |
 ------------ | ------------- | -------------
-|[Ricky Renuncia Protest | JSONL | https://catalog.docnow.io/datasets/20190930-rickyrenuncia/|
-|[HuelgaUPRTweets | JSONL | https://catalog.docnow.io/datasets/20170519-huelgaupr-tweets-april-20-may-18-2017/|
+|Ricky Renuncia Protest | JSONL | https://catalog.docnow.io/datasets/20190930-rickyrenuncia/|
+|HuelgaUPRTweets | JSONL | https://catalog.docnow.io/datasets/20170519-huelgaupr-tweets-april-20-may-18-2017/|
 |Embeded Tweets  | JSON  | Twitter API Response |
 
 ### Data Access & Manipulation: Ricky Renuncia Protest and HuelgaUPRTweets(University of Puerto Rico Student Protest)
