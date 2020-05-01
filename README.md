@@ -123,7 +123,7 @@ With this program the user will be able to search a database of tweets related t
 The user will be able to fill a form setting up the historical event, language, location and the search query.
 With this metadata, the user will see a table displaying the data requested and a hyperlinked tweet id.
 If the user wants to see the embedded tweet, it just needs to click on the tweet id number.
-if the tweet has been deleted the user will see the tweet id and a warning message.
+If the tweet has been deleted the user will see the tweet id and a warning message.
 
 I am using Flask to display the form and table and also used CSS Grid to style the results page.
 
