@@ -10,8 +10,8 @@
 		<p>Displaying tweet <a href="https://twitter.com/anyuser/status/{{tweet[3]}}">{{tweet[3]}}</a>: </p>
 		{{embed_html|safe}}
 	{% else %}
+		<h3>Tweet may have been archived or deleted by user.</h3>
 		<p>Tweet embeding not available for tweet <a href="https://twitter.com/anyuser/status/{{tweet[3]}}">{{tweet[3]}}</a>.</p>
-	<h3>Tweet may have been archived or deleted by user.</h3>
 	{% endif %}
 </body>
 </html>
