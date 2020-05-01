@@ -74,31 +74,31 @@ Photo of ERD Diagram for protest_database
 #### Code developed to create the database:
 
 '''
-    #SQL TABLES
-    create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT, " \
-                      f"full_text char(200), " \
-                      f"create_at datetime,"\
-                      f"user_id int, " \
-                      f"place varchar(30), " \
-                      f"geo varchar(30), " \
-                      f"coordinates varchar(30)," \
-                      f"user_loc varchar(30), " \
-                      f"valid_tweet_id int, " \
-                      f"valid_embed int,"\
-                      f"lang str , " \
-                      f"project_id int, " \
-                      f"PRIMARY KEY(project_id, tweet_id), " \
-                      f"CONSTRAINT fk_column " \
-                      f"FOREIGN KEY (project_id) " \
-                      f"REFERENCES {PROJECT_TABLE}(project_id))"
+#SQL TABLES
+create_tweet_txt= f"CREATE TABLE {T_TABLE}(tweet_id UNSIGNED BIG INT, " \
+          f"full_text char(200), " \
+          f"create_at datetime,"\
+          f"user_id int, " \
+          f"place varchar(30), " \
+          f"geo varchar(30), " \
+          f"coordinates varchar(30)," \
+          f"user_loc varchar(30), " \
+          f"valid_tweet_id int, " \
+          f"valid_embed int,"\
+          f"lang str , " \
+          f"project_id int, " \
+          f"PRIMARY KEY(project_id, tweet_id), " \
+          f"CONSTRAINT fk_column " \
+          f"FOREIGN KEY (project_id) " \
+          f"REFERENCES {PROJECT_TABLE}(project_id))"
 
-    create_project = f"CREATE TABLE {PROJECT_TABLE}(project_id int PRIMARY KEY, name str)"
+create_project = f"CREATE TABLE {PROJECT_TABLE}(project_id int PRIMARY KEY, name str)"
 
-    create_tweet_hashtag= f"CREATE TABLE {TH_TABLE}(tweet_hash_rel INTEGER PRIMARY KEY AUTOINCREMENT, " \
-                          f"tweet_id int, hashtag varchar(30)," \
-                          f"CONSTRAINT fk_column " \
-                          f"FOREIGN KEY (tweet_id) " \
-                          f"REFERENCES {T_TABLE}(tweet_id))"
+create_tweet_hashtag= f"CREATE TABLE {TH_TABLE}(tweet_hash_rel INTEGER PRIMARY KEY AUTOINCREMENT, " \
+              f"tweet_id int, hashtag varchar(30)," \
+              f"CONSTRAINT fk_column " \
+              f"FOREIGN KEY (tweet_id) " \
+              f"REFERENCES {T_TABLE}(tweet_id))"
 '''
 
 
