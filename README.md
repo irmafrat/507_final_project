@@ -73,7 +73,6 @@ Photo of ERD Diagram for protest_database
 
 #### Code developed to create the database:
 
-
 '''
 
 SQL TABLES
