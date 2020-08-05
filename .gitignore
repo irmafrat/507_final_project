@@ -6,3 +6,9 @@ RickyRenunciaLlevateJunta.jsonl
 *.txt
 rickyrenunciaparts
 *.sql.old
+embed_cache.json
+kept_tweets.json
+luchaSiEntregano2K.jsonl
+protest_database.sql
+rickyrenuncia2K.jsonl
+tweet_cache.json
